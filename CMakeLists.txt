@@ -32,6 +32,20 @@ install(TARGETS NPass
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
+option(ENABLE_ASAN "Enable AddressSanitizer" ON)
+
+if(ENABLE_ASAN)
+    message(STATUS "AddressSanitizer enabled")
+
+    set(ASAN_FLAGS
+        -fsanitize=address
+        -fno-omit-frame-pointer
+        -g
+    )
+
+    add_compile_options(${ASAN_FLAGS})
+    add_link_options(-fsanitize=address)
+endif()
 qt_generate_deploy_app_script(
     TARGET NPass
     OUTPUT_SCRIPT deploy_script

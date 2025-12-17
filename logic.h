@@ -227,10 +227,28 @@ public:
 
         file.write(data);
     }
+    QByteArray convertStringToArray(const QString& keyString)
+    {
+        QByteArray keyBytes;
+        keyBytes.resize(16);
+        keyBytes.fill('\0');
+
+        QByteArray keyStringConv = keyString.toUtf8();
+
+        for(size_t i = 0; i < 16; i++)
+        {
+            if (i < keyStringConv.size())
+            {
+                keyBytes[i] = keyStringConv[i];
+            }
+        }
+        //qDebug() <<  keyBytes;
+        return keyBytes;
+    }
     QByteArray encrypt(const QByteArray& data, const QString& keyString)
     {
-        QByteArray keyBytes = keyString.toUtf8();
-        keyBytes.resize(16);
+        QByteArray keyBytes = convertStringToArray(keyString);
+
         struct AES_ctx ctx;
         AES_init_ctx(&ctx, reinterpret_cast<uint8_t*>(keyBytes.data()));
         const int blockSize = 16;
@@ -252,8 +270,17 @@ public:
     }
     QByteArray decrypt(const QByteArray& data, const QString& keyString)
     {
-        QByteArray keyBytes = keyString.toUtf8();
-        keyBytes.resize(16);
+        QByteArray keyBytes = convertStringToArray(keyString);
+        // DEBUG
+        // static const char raw[16] = {
+        //     0x00, 0x01, 0x02, 0x03,
+        //     0x04, 0x05, 0x06, 0x07,
+        //     0x08, 0x09, 0x0A, 0x0B,
+        //     0x0C, 0x0D, 0x0E, 0x0F
+        // };
+
+        // QByteArray keyBytes = QByteArray::fromRawData(raw, 16);
+
         struct AES_ctx ctx;
         AES_init_ctx(&ctx, reinterpret_cast<uint8_t*>(keyBytes.data()));
         const int blockSize = 16;
@@ -354,6 +381,7 @@ public slots:
         {
             QByteArray tmp = decrypt(array, textPassword);
             str = QString::fromUtf8(tmp);
+            qDebug() << "Encr " << str;
         }
         else
         {

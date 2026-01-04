@@ -1,4 +1,6 @@
 #include "logic.h"
+#include "aes.h"
+#include <vector>
 
 QString& getVariableByColumn(int column, ManagerRow& row)
 {

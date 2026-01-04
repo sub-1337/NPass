@@ -1,14 +1,11 @@
 #ifndef LOGIC_H
 #define LOGIC_H
-#include <vector>
 #include <QObject>
 #include <QTableWidget>
 #include <QDebug>
 #include <QLineEdit>
 #include <QPushButton>
-#include <stdexcept>
 #include <QTextStream>
-#include <map>
 #include <QFile>
 #include <QFileDialog>
 #include <QInputDialog>
@@ -16,7 +13,7 @@
 #define CBC 1
 #define CTR 1
 #define ECB 1
-#include "aes.h"
+
 
 using std::vector;
 struct ManagerRow

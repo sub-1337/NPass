@@ -1,2 +1,3 @@
 # NPass
 
+Protected password manager.
